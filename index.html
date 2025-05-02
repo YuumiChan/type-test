@@ -54,10 +54,52 @@
 			margin: 2% 5%;
 			padding-inline: 20% 1%;
 		}
+
+		/* Splash screen styles */
+		#splash-overlay {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100vw;
+			height: 100vh;
+			background: #000;
+			color: #0f0;
+			font-family: monospace;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			z-index: 9999;
+			opacity: 1;
+			transition: opacity 1s ease-in-out;
+		}
+
+		#splash-overlay.fade-out {
+			opacity: 0;
+			pointer-events: none;
+		}
+
+		.typing-text {
+			font-size: 24px;
+			white-space: nowrap;
+			overflow: hidden;
+			border-right: 3px solid #0f0;
+			animation: cursor-blink 0.75s step-end infinite;
+			margin: 0;
+		}
+
+		@keyframes cursor-blink {
+			50% {
+				border-color: transparent;
+			}
+		}
 	</style>
 </head>
 
 <body>
+	<!-- Splash overlay -->
+	<div id="splash-overlay">
+		<p class="typing-text"></p>
+	</div>
 	<div id="header"></div>
 
 	<canvas id="letterCanvas"></canvas>
@@ -256,6 +298,63 @@
 				});
 			});
 		});
+
+		// Splash screen logic
+		(function () {
+			const splash = document.getElementById('splash-overlay');
+			const typingText = splash.querySelector('.typing-text');
+			const texts = [
+				"Welcome...",
+				"this is a simple website",
+				"made with love and puyat",
+				"by YuuMi...."
+			];
+			let textIndex = 0;
+			let charIndex = 0;
+
+			function type() {
+				if (textIndex < texts.length) {
+					if (charIndex < texts[textIndex].length) {
+						typingText.textContent += texts[textIndex][charIndex];
+						charIndex++;
+						setTimeout(type, 100);
+					} else {
+						setTimeout(erase, 1000);
+					}
+				} else {
+					setTimeout(() => {
+						splash.classList.add('fade-out');
+						setTimeout(() => {
+							splash.style.display = 'none';
+							document.body.style.opacity = '1';
+						}, 1000);
+					}, 1000);
+				}
+			}
+			function erase() {
+				if (charIndex > 0) {
+					typingText.textContent = texts[textIndex].substring(0, charIndex - 1);
+					charIndex--;
+					setTimeout(erase, 50);
+				} else {
+					textIndex++;
+					charIndex = 0;
+					setTimeout(type, 300);
+				}
+			}
+			// Only show splash if not already shown in this session
+			if (!sessionStorage.getItem('splashShown')) {
+				document.body.style.opacity = '0'; // Hide main content until splash is done
+				window.addEventListener('DOMContentLoaded', () => {
+					setTimeout(type, 500);
+					sessionStorage.setItem('splashShown', 'true');
+				});
+			} else {
+				// Hide splash immediately if already shown
+				splash.style.display = 'none';
+				document.body.style.opacity = '1';
+			}
+		})();
 	</script>
 </body>
 
