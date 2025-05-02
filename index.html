@@ -4,10 +4,11 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>MIRAnda</title>
+	<title>Sakit Ima</title>
 	<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
 	<link rel="stylesheet" href="index.css" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+	<link rel="icon" type="image/x-icon" href="/umms/fabcon.png" />
 	<style>
 		body {
 			opacity: 0;
@@ -79,12 +80,20 @@
 		}
 
 		.typing-text {
-			font-size: 24px;
-			white-space: nowrap;
+			font-size: 40vw;
+			max-width: 90vw;
+			white-space: pre-line;
 			overflow: hidden;
 			border-right: 3px solid #0f0;
 			animation: cursor-blink 0.75s step-end infinite;
 			margin: 0;
+			text-align: center;
+			line-height: 1.1;
+		}
+
+		.typing-text {
+			font-size: 10rem;
+
 		}
 
 		@keyframes cursor-blink {
@@ -305,8 +314,7 @@
 			const typingText = splash.querySelector('.typing-text');
 			const texts = [
 				"Welcome...",
-				"this is a simple website",
-				"made with love and puyat",
+				"this is a simple website <br> made with love and puyat",
 				"by YuuMi...."
 			];
 			let textIndex = 0;
@@ -314,12 +322,20 @@
 
 			function type() {
 				if (textIndex < texts.length) {
-					if (charIndex < texts[textIndex].length) {
-						typingText.textContent += texts[textIndex][charIndex];
+					const currentText = texts[textIndex];
+					// Handle <br> as a single character for typing effect
+					const plainText = currentText.replace(/<br>/g, '\n');
+					if (charIndex < plainText.length) {
+						let nextChar = plainText[charIndex];
+						if (nextChar === '\n') {
+							typingText.innerHTML += "<br>";
+						} else {
+							typingText.innerHTML += nextChar;
+						}
 						charIndex++;
-						setTimeout(type, 100);
+						setTimeout(type, 50); // faster typing speed
 					} else {
-						setTimeout(erase, 1000);
+						setTimeout(erase, 1500); // wait before erasing
 					}
 				} else {
 					setTimeout(() => {
@@ -328,18 +344,28 @@
 							splash.style.display = 'none';
 							document.body.style.opacity = '1';
 						}, 1000);
-					}, 1000);
+					}, 700);
 				}
 			}
 			function erase() {
+				const currentText = texts[textIndex];
+				const plainText = currentText.replace(/<br>/g, '\n');
 				if (charIndex > 0) {
-					typingText.textContent = texts[textIndex].substring(0, charIndex - 1);
+					let html = "";
+					for (let i = 0; i < charIndex - 1; i++) {
+						if (plainText[i] === '\n') {
+							html += "<br>";
+						} else {
+							html += plainText[i];
+						}
+					}
+					typingText.innerHTML = html;
 					charIndex--;
-					setTimeout(erase, 50);
+					setTimeout(erase, 20); // faster erase speed
 				} else {
 					textIndex++;
 					charIndex = 0;
-					setTimeout(type, 300);
+					setTimeout(type, 200);
 				}
 			}
 			// Only show splash if not already shown in this session
@@ -354,6 +380,16 @@
 				splash.style.display = 'none';
 				document.body.style.opacity = '1';
 			}
+			// Title change on blur/focus
+			(function () {
+				const originalTitle = document.title;
+				window.addEventListener('blur', () => {
+					document.title = "Dont leave me UwU";
+				});
+				window.addEventListener('focus', () => {
+					document.title = originalTitle;
+				});
+			})();
 		})();
 	</script>
 </body>
