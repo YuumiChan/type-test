@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Falling Words Game</title>
+	<link rel="stylesheet" href="falling.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+</head>
+
+<body>
+	<div id="game-container">
+		<div id="start-screen">
+			<button id="play-button">
+				<i class="fas fa-play"></i>
+			</button>
+		</div>
+		<button id="pause-button" style="display: none">
+			<i class="fas fa-pause"></i>
+		</button>
+		<div id="pause-overlay">
+			<button id="resume-button">
+				<i class="fas fa-play"></i>
+			</button>
+		</div>
+		<div id="score">Score: 0</div>
+		<div id="game-over">
+			<h2>Game Over!</h2>
+			<p>Final Score: <span id="final-score">0</span></p>
+			<button onclick="restartGame()">Restart</button>
+			<button onclick="goHome()">Home</button>
+		</div>
+		<div class="theme-switch-wrapper">
+			<label class="theme-switch" for="checkbox">
+				<input type="checkbox" id="checkbox" />
+				<div class="slider round"></div>
+			</label>
+		</div>
+	</div>
+	<div id="footer"></div>
+	<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
+	<script src="falling.js"></script>
+</body>
+
+</html>

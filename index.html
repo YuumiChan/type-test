@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>MIRAnda</title>
+	<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
+	<link rel="stylesheet" href="index.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+	<style>
+		body {
+			opacity: 0;
+			animation: fadeIn 1s ease-in forwards;
+			transition: opacity 1s ease-in-out;
+		}
+
+		body.fade-out {
+			opacity: 0;
+		}
+
+		@keyframes fadeIn {
+			from {
+				opacity: 0;
+			}
+
+			to {
+				opacity: 1;
+			}
+		}
+
+		.game-button {
+			background-color: grey;
+			color: white;
+			padding: 2% 6%;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 2rem;
+			border-radius: 5rem;
+			drop-shadow: 0 0 5px black;
+			border: none;
+		}
+
+		.SB {
+			display: flex;
+			justify-content: space-around;
+
+		}
+
+		.sep {
+			border-top: 8px solid grey;
+			border-radius: 5rem;
+			margin: 2% 5%;
+			padding-inline: 20% 1%;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="header"></div>
+
+	<canvas id="letterCanvas"></canvas>
+
+	<img src="umms/keyboard.png" alt="keyboard here" srcset="" class="img-background" />
+	<main>
+		<div class="container">
+
+			<div class="games">
+				<h1>Games:</h1>
+				<div class="SB">
+
+					<button onclick="location.href='falling.html'" class="game-button">Falling Game</button>
+					<button onclick="location.href='keyboard.html'" class="game-button">Speed Test</button>
+				</div>
+			</div>
+			<div class="exercises">
+				<h1>exercises:</h1>
+				<div class="SB">
+					<button onclick="location.href='excercise1.html'" class="game-button">Hand Placement</button>
+					<!-- <button onclick="location.href='excercise2.html'" class="game-button">Practice 2</button> -->
+
+				</div>
+			</div>
+		</div>
+		<hr class="sep">
+		<div class="leaderboard"
+			style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 2em 0;">
+			<h2>Leaderboard</h2>
+			<div style="margin-bottom: 1em;">
+				<label for="gameFilter">Game:</label>
+				<select id="gameFilter">
+					<option value="falling">Falling Game</option>
+					<option value="speedtest">Speed Test</option>
+				</select>
+				<span id="sentenceFilterContainer" style="display:none;">
+					<label for="sentenceFilter">Sentence:</label>
+					<select id="sentenceFilter"></select>
+				</span>
+			</div>
+			<table id="leaderboardTable" style="margin: 0 auto; text-align: center;">
+				<thead>
+					<tr id="leaderboardHeader"></tr>
+				</thead>
+				<tbody id="leaderboardBody"></tbody>
+			</table>
+		</div>
+		<script src="leaderboard.js"></script>
+		<div class="right">
+			<h1>The First Keyboard</h1>
+			<p>The first ever keyboard was created in 1868 by Christopher Latham Sholes, the inventor of the typewriter.
+				It was called the Sholes and Glidden typewriter, and it included the QWERTY layout we still use today.
+			</p>
+		</div>
+		<div class="left">
+			<h1>QWERTY Layout</h1>
+			<p>The QWERTY keyboard layout was intentionally designed to reduce the risk of typewriter jams by spacing
+				out frequently used letters, even though it doesn’t optimize typing speed.</p>
+		</div>
+		<div class="right">
+			<h1>Keyboard Dancing</h1>
+			<p>If you leave your cat alone with your keyboard, expect a full-on concert. Cats are experts at playing the
+				"keyboard shuffle," which is basically them walking across your keys and creating a random, chaotic
+				masterpiece.</p>
+		</div>
+		<div class="left">
+			<h1>The "Backspace Rage"</h1>
+			<p>Everyone has experienced it: a tiny typo turns into a full-blown "Backspace Rage." You're deleting like a
+				mad person, but then you accidentally backspace too far and erase an entire sentence. Well, that
+				escalated quickly.</p>
+		</div>
+		<div class="last">
+			<h1>Typist's Cramp</h1>
+			<p>A term for the muscle cramp you sometimes get in your hands after long typing sessions.</p>
+		</div>
+	</main>
+	<div id="footer"></div>
+
+	<!-- Wrap fixed elements in a container -->
+	<div class="fixed-elements">
+		<div class="chat-bubble" onclick="toggleChat()">
+			<div class="container">
+				<div id="chatbot">
+					<div class="dot"></div>
+					<div class="dot"></div>
+					<div class="dot"></div>
+				</div>
+				<div id="chatbot-corner"></div>
+				<div id="antenna">
+					<div id="beam"></div>
+					<div id="beam-pulsar"></div>
+				</div>
+			</div>
+		</div>
+
+		<div class="theme-switch-wrapper">
+			<label class="theme-switch" for="checkbox">
+				<input type="checkbox" id="checkbox" />
+				<div class="slider round"></div>
+			</label>
+		</div>
+	</div>
+
+	<!-- Chat bot container -->
+	<div class="chat-container" id="chatContainer" style="display: none">
+		<div class="chat-header">
+			<h3>Ahhhh Bot</h3>
+			<button class="close-chat" onclick="toggleChat()">×</button>
+		</div>
+		<div class="chat-body" id="chatBody">
+			<!-- Messages will appear here -->
+		</div>
+	</div>
+	<script src="index.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
+	<script>
+		// Ensure isLoggedIn is set to 'false' if not present
+		if (localStorage.getItem('isLoggedIn') === null) {
+			localStorage.setItem('isLoggedIn', 'false');
+		}
+		// Load header and footer
+		function loadFragment(id, url, callback) {
+			fetch(url)
+				.then(res => res.text())
+				.then(html => {
+					document.getElementById(id).innerHTML = html;
+					if (typeof callback === 'function') callback();
+				});
+		}
+		loadFragment('header', 'header.html', function () {
+			// Now header is loaded, load auth-ui.js
+			var script = document.createElement('script');
+			script.src = 'auth-ui.js';
+			document.body.appendChild(script);
+		});
+		loadFragment('footer', 'footer.html');
+
+		function toggleChat() {
+			const chatContainer = document.getElementById("chatContainer");
+			if (chatContainer.style.display === "none" || !chatContainer.style.display) {
+				chatContainer.style.display = "flex";
+				// Add animation
+				chatContainer.style.opacity = "0";
+				chatContainer.style.transform = "translateY(20px)";
+				setTimeout(() => {
+					chatContainer.style.opacity = "1";
+					chatContainer.style.transform = "translateY(0)";
+					showWelcomeMessage();
+				}, 50);
+			} else {
+				chatContainer.style.opacity = "0";
+				chatContainer.style.transform = "translateY(20px)";
+				setTimeout(() => {
+					chatContainer.style.display = "none";
+				}, 300);
+			}
+		}
+
+		function showWelcomeMessage() {
+			const chatBody = document.getElementById("chatBody");
+			chatBody.innerHTML = `
+					<div class="message-container bot">
+						<div class="message">Welcome to Sakit Ima. We like to help everyone to type faster and more efficient, we got practice and games for you to try</div>
+					</div>
+					<div class="chat-options">
+						<button class="chat-button" onclick="location.href='excercise1.html'">Practice</button>
+						<button class="chat-button" onclick="showGames()">Games</button>
+					</div>
+				`;
+		}
+
+		function showGames() {
+			const chatBody = document.getElementById("chatBody");
+			chatBody.innerHTML = `
+					<div class="message-container bot">
+						<div class="message">Okey, currently we have falling and speed test. what would like to try?</div>
+					</div>
+					<div class="chat-options">
+						<button class="chat-button" onclick="location.href='falling.html'">Falling</button>
+						<button class="chat-button" onclick="location.href='keyboard.html'">Speed Test</button>
+					</div>
+				`;
+		}
+
+		// Fade-out on navigation
+		document.addEventListener('DOMContentLoaded', function () {
+			const links = document.querySelectorAll('a, button');
+			links.forEach(link => {
+				link.addEventListener('click', function (e) {
+					const href = link.getAttribute('href');
+					if (href && !href.startsWith('#') && !link.hasAttribute('download') && !link.target) {
+						e.preventDefault();
+						document.body.classList.add('fade-out');
+						setTimeout(() => { window.location.href = href; }, 500);
+					}
+				});
+			});
+		});
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,271 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+#game-container {
+    width: 100vw;
+    height: 100vh;
+    background: #1a1a1a;
+    position: relative;
+}
+.word {
+    position: absolute;
+    color: white;
+    font-size: 24px;
+    transition: opacity 0.3s;
+}
+.word.typing {
+    color: #00ff00;
+}
+.word.fade {
+    opacity: 0;
+}
+#score {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: white;
+    font-size: 24px;
+}
+#game-over {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+}
+button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+}
+.word .typed {
+    color: #00ff00;
+}
+.word .untyped {
+    color: white;
+}
+.word.completed {
+    opacity: 0;
+    pointer-events: none;
+    animation: pulse 0.5s infinite;
+}
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+.word.danger {
+    animation: pulse 0.5s infinite;
+}
+
+#start-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0,0,0,0.8);
+    z-index: 100;
+}
+
+#play-button, #resume-button {
+    background: none;
+    border: 4px solid #4CAF50;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+#play-button {
+    width: 160px;
+    height: 160px;
+}
+
+#play-button i, #resume-button i {
+    color: white;
+    font-size: 64px;
+    position: relative;
+    z-index: 2;
+    transition: color 0.3s ease;
+}
+
+#play-button i {
+    font-size: 84px;
+}
+
+#play-button::before, #resume-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: #4CAF50;
+    transition: transform 0.3s ease;
+    transform: skewX(-15deg);
+}
+
+#play-button:hover::before, #resume-button:hover::before {
+    transform: skewX(-15deg) translateX(100%);
+}
+
+#play-button:hover i, #resume-button:hover i {
+    color: #fff;
+}
+
+#pause-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 10;
+}
+
+.theme-switch-wrapper {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100;
+}
+
+.theme-switch {
+    display: inline-block;
+    height: 34px;
+    position: relative;
+    width: 60px;
+}
+
+.theme-switch input {
+    display: none;
+}
+
+.slider {
+    background-color: #ccc;
+    bottom: 0;
+    cursor: pointer;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: .4s;
+}
+
+.slider:before {
+    background-color: #fff;
+    bottom: 4px;
+    content: "";
+    height: 26px;
+    left: 4px;
+    position: absolute;
+    transition: .4s;
+    width: 26px;
+}
+
+input:checked + .slider {
+    background-color: #66bb6a;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+slider.round:before {
+    border-radius: 50%;
+}
+
+/* Dark theme styles */
+[data-theme="dark"] #game-container {
+    background: #1a1a1a;
+}
+
+/* Update light theme styles */
+[data-theme="light"] #game-container {
+    background: #ffffff;
+}
+
+[data-theme="light"] .word .untyped,
+[data-theme="light"] #score,
+[data-theme="light"] #game-over,
+[data-theme="light"] button {
+    color: #333;
+}
+
+[data-theme="light"] #play-button,
+[data-theme="light"] #resume-button {
+    border-color: #4CAF50;
+}
+
+[data-theme="light"] #play-button i,
+[data-theme="light"] #resume-button i {
+    color: #4CAF50;
+}
+
+[data-theme="light"] #play-button:hover i,
+[data-theme="light"] #resume-button:hover i {
+    color: #fff;
+}
+
+[data-theme="light"] #pause-button {
+    color: #333;
+}
+
+[data-theme="light"] #play-button {
+    color: #4CAF50;
+}
+
+[data-theme="light"] #resume-button {
+    color: #333;
+}
+
+/* Add pause overlay styles */
+#pause-overlay {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+    justify-content: center;
+    align-items: center;
+}
+
+#pause-overlay #play-button {
+    z-index: 100;
+    opacity: 1 !important;
+}
+
+.paused .word {
+    animation-play-state: paused !important;
+}
+
+.game-paused {
+    opacity: 0.5;
+}
+
+.game-paused #pause-overlay {
+    display: flex;
+}
+
+[data-theme="light"] .word .untyped {
+    color: #333;
+}

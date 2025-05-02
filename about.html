@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>MIRAnda - About</title>
+	<link rel="stylesheet" href="index.css" />
+	<style>
+		body {
+			opacity: 0;
+			animation: fadeIn 1s ease-in forwards;
+			transition: opacity 1s ease-in-out;
+		}
+
+		body.fade-out {
+			opacity: 0;
+		}
+
+		@keyframes fadeIn {
+			from {
+				opacity: 0;
+			}
+
+			to {
+				opacity: 1;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<div id="header"></div>
+
+	<canvas id="letterCanvas"></canvas>
+
+	<!-- Main content section -->
+	<main>
+		<div class="container">
+			<h1>A Simple Site that has exercises to make typing speed faster and better</h1>
+		</div>
+	</main>
+
+	<div class="theme-switch-wrapper">
+		<label class="theme-switch" for="checkbox">
+			<input type="checkbox" id="checkbox" />
+			<div class="slider round"></div>
+		</label>
+	</div>
+
+	<div id="footer"></div>
+	<script src="index.js"></script>
+	<script>
+		// Load header and footer
+		function loadFragment(id, url, callback) {
+			fetch(url)
+				.then(res => res.text())
+				.then(html => {
+					document.getElementById(id).innerHTML = html;
+					if (typeof callback === 'function') callback();
+				});
+		}
+		loadFragment('header', 'header.html', function () {
+			// Now header is loaded, load auth-ui.js
+			var script = document.createElement('script');
+			script.src = 'auth-ui.js';
+			document.body.appendChild(script);
+		});
+		loadFragment('footer', 'footer.html');
+
+		// Fade-out on navigation
+		document.addEventListener('DOMContentLoaded', function () {
+			const links = document.querySelectorAll('a, button');
+			links.forEach(link => {
+				link.addEventListener('click', function (e) {
+					const href = link.getAttribute('href');
+					if (href && !href.startsWith('#') && !link.hasAttribute('download') && !link.target) {
+						e.preventDefault();
+						document.body.classList.add('fade-out');
+						setTimeout(() => { window.location.href = href; }, 500);
+					}
+				});
+			});
+		});
+	</script>
+</body>
+
+</html>
