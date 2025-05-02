@@ -380,14 +380,47 @@
 				splash.style.display = 'none';
 				document.body.style.opacity = '1';
 			}
+
+			// Title typing animation (type once, blink cursor twice before next letter)
+			let typingActive = true;
+			const text = "Typing Speed Game";
+			let i = 0;
+			let cursorBlinkCount = 0;
+			let originalTitle = document.title;
+
+			function updateTitle() {
+				if (!typingActive) return;
+				const visibleText = text.substring(0, i);
+				const cursor = cursorBlinkCount % 2 === 0 ? "|" : " ";
+				document.title = visibleText + cursor;
+
+				if (i < text.length) {
+					cursorBlinkCount++;
+					if (cursorBlinkCount < 4) {
+						setTimeout(updateTitle, 250); // blink twice (4 states: |, , |, )
+					} else {
+						i++;
+						cursorBlinkCount = 0;
+						setTimeout(updateTitle, 120);
+					}
+				} else if (cursorBlinkCount < 2) {
+					cursorBlinkCount++;
+					setTimeout(updateTitle, 500);
+				} else {
+					document.title = text; // Final title, no cursor
+				}
+			}
+			updateTitle();
+
 			// Title change on blur/focus
 			(function () {
-				const originalTitle = document.title;
 				window.addEventListener('blur', () => {
+					typingActive = false;
 					document.title = "Dont leave me UwU";
 				});
 				window.addEventListener('focus', () => {
-					document.title = originalTitle;
+					typingActive = false;
+					document.title = text;
 				});
 			})();
 		})();
