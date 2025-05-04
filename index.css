@@ -325,6 +325,25 @@ main {
   opacity: 0.9;
 }
 
+/* Add leaderboard styles */
+.leaderboard {
+  width: 100%;
+  max-width: 900px;
+  box-sizing: border-box;
+  background: var(--secondary-color);
+  border-radius: 2rem;
+  padding: 2em 1em;
+  margin: 2em auto;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+  opacity: 0.95;
+  font-size: 1.5rem;
+}
+#leaderboardHeader {
+  font-size: 1rem;
+}
+#leaderboardBody {
+  font-size: 1.8rem;
+}
 
 /* Update responsive styles */
 @media (max-width: 768px) {
@@ -415,7 +434,6 @@ main {
     right: 3vw;
   }
 }
-
 
 /* Improve container responsiveness */
 .container {
