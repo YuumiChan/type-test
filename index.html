@@ -255,7 +255,8 @@
 				<h1>Games:</h1>
 				<div class="SB">
 
-					<button onclick="location.href='falling.html'" class="game-button">Falling Game</button>
+					<button id="fallingGameBtn" onclick="handleFallingGameClick()" class="game-button">Falling
+						Game</button>
 					<button onclick="location.href='keyboard.html'" class="game-button">Speed Test</button>
 				</div>
 			</div>
@@ -281,6 +282,13 @@
 				<span id="sentenceFilterContainer" style="display:none;">
 					<label for="sentenceFilter">Sentence:</label>
 					<select id="sentenceFilter"></select>
+				</span>
+				<span id="sortFilterContainer" style="display:none;">
+					<label for="sortFilter">Sort by:</label>
+					<select id="sortFilter">
+						<option value="wpm">WPM</option>
+						<option value="time">Time</option>
+					</select>
 				</span>
 			</div>
 			<table id="leaderboardTable" style="margin: 0 auto; text-align: center;">
@@ -442,6 +450,28 @@
 			});
 		});
 
+
+
+		// Make handleFallingGameClick and isMobile globally available
+		function isMobile() {
+			return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+		}
+		function handleFallingGameClick() {
+			if (isMobile()) {
+				window.location.href = 'falling-phone.html';
+			} else {
+				window.location.href = 'falling.html';
+			}
+		}
+
+		// Hide Falling Game button on mobile
+		document.addEventListener('DOMContentLoaded', function () {
+			if (isMobile()) {
+				var fallingBtn = document.getElementById('fallingGameBtn');
+				if (fallingBtn) fallingBtn.style.display = 'none';
+			}
+		});
+
 		// Splash screen logic
 		(function () {
 			const splash = document.getElementById('splash-overlay');
@@ -557,6 +587,17 @@
 					document.title = text;
 				});
 			})();
+			// Falling Game button: redirect to phone version if on mobile
+			function isMobile() {
+				return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+			}
+			function handleFallingGameClick() {
+				if (isMobile()) {
+					window.location.href = 'falling-phone.html';
+				} else {
+					window.location.href = 'falling.html';
+				}
+			}
 		})();
 	</script>
 </body>

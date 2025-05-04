@@ -841,7 +841,8 @@ footer {
 
 /* Themed and larger select/dropdown for leaderboard */
 #gameFilter,
-#sentenceFilter {
+#sentenceFilter,
+#sortFilter {
   min-width: 180px;
   font-size: 1.1em;
   padding: 0.5em 1.2em 0.5em 0.7em;
@@ -857,20 +858,23 @@ footer {
 }
 
 #gameFilter:focus,
-#sentenceFilter:focus {
+#sentenceFilter:focus,
+#sortFilter:focus {
   outline: none;
   border-color: var(--accent-color, #66bb6a);
 }
 
 [data-theme="light"] #gameFilter,
-[data-theme="light"] #sentenceFilter {
+[data-theme="light"] #sentenceFilter,
+[data-theme="light"] #sortFilter {
   background: #fff;
   color: #222;
   border-color: #4CAF50;
 }
 
 [data-theme="dark"] #gameFilter,
-[data-theme="dark"] #sentenceFilter {
+[data-theme="dark"] #sentenceFilter,
+[data-theme="dark"] #sortFilter {
   background: #222;
   color: #fff;
   border-color: #4CAF50;
@@ -878,7 +882,8 @@ footer {
 
 /* Add a dropdown arrow */
 #gameFilter,
-#sentenceFilter {
+#sentenceFilter,
+#sortFilter {
   background-image: url("data:image/svg+xml;utf8,<svg fill='gray' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
   background-repeat: no-repeat;
   background-position: right 0.7em center;
@@ -889,7 +894,8 @@ footer {
 @media (max-width: 700px) {
 
   #gameFilter,
-  #sentenceFilter {
+  #sentenceFilter,
+  #sortFilter {
     min-width: 120px;
     font-size: 1em;
     padding: 0.4em 1.2em 0.4em 0.5em;

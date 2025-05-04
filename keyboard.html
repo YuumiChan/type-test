@@ -7,11 +7,39 @@
 	<title>Sakit Ima</title>
 	<link rel="stylesheet" href="index.css" />
 	<link rel="stylesheet" href="keyboard.css" />
+	<style>
+		.header-home-btn {
+			display: block;
+			width: 20%;
+			padding: 1.2em 0;
+			background: rgb(68, 68, 68);
+			color: white;
+			text-align: center;
+			text-decoration: none;
+			font-size: 1.5em;
+			font-weight: bold;
+			border-radius: 0 0 10px 10px;
+			transition: background 0.2s;
+			cursor: pointer;
+			border: none;
+			outline: none;
+		}
+
+		.header-home-btn:hover {
+			background: #a01030;
+			color: #fff;
+		}
+
+		header {
+			padding: 0;
+			margin: 0;
+		}
+	</style>
 </head>
 
 <body>
 	<header>
-		<a href="index.html" class="home-btn">Home</a>
+		<a href="index.html" class="header-home-btn" id="homeBtn">Home</a>
 	</header>
 	<main>
 		<div class="container">
@@ -28,8 +56,6 @@
 			<div class="slider round"></div>
 		</label>
 	</div>
-</body>
-<footer>
 	<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
 	<script src="keyboard.js"></script>
 	<script>
@@ -54,7 +80,19 @@
 		}
 
 		toggleSwitch.addEventListener("change", switchTheme);
+
+		// Fix Home button navigation (prevent fade-out bug)
+		document.getElementById('homeBtn').addEventListener('click', function (e) {
+			e.preventDefault();
+			window.location.href = 'index.html';
+		});
+		document.querySelector('header').addEventListener('click', function (e) {
+			// Prevent double navigation if already on anchor
+			if (e.target.id !== 'homeBtn') {
+				window.location.href = 'index.html';
+			}
+		});
 	</script>
-</footer>
+</body>
 
 </html>

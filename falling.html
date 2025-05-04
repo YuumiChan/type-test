@@ -7,6 +7,21 @@
 	<title>Falling Words Game</title>
 	<link rel="stylesheet" href="falling.css" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+	<link rel="icon" type="image/x-icon" href="umms/fabcon.png" />
+	<style>
+		html,
+		body {
+			height: 100%;
+			margin: 0;
+			padding: 0;
+			background: #1a1a1a;
+		}
+
+		body {
+			overflow: hidden;
+			box-sizing: border-box;
+		}
+	</style>
 </head>
 
 <body>
@@ -19,9 +34,12 @@
 		<button id="pause-button" style="display: none">
 			<i class="fas fa-pause"></i>
 		</button>
-		<div id="pause-overlay">
+		<div id="pause-overlay" style="flex-direction: column; align-items: center;">
 			<button id="resume-button">
 				<i class="fas fa-play"></i>
+			</button>
+			<button id="pause-home-button" style="margin-top: 1.5em; display: none;">
+				Home
 			</button>
 		</div>
 		<div id="score">Score: 0</div>
@@ -41,6 +59,52 @@
 	<div id="footer"></div>
 	<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
 	<script src="falling.js"></script>
+	<script>
+		// Theme switch logic: checked = dark, unchecked = light
+		const toggleSwitch = document.querySelector("#checkbox");
+		const currentTheme = localStorage.getItem("theme");
+		if (currentTheme) {
+			document.documentElement.setAttribute("data-theme", currentTheme);
+			toggleSwitch.checked = currentTheme === "dark";
+		}
+		function switchTheme(e) {
+			if (e.target.checked) {
+				document.documentElement.setAttribute("data-theme", "dark");
+				localStorage.setItem("theme", "dark");
+			} else {
+				document.documentElement.setAttribute("data-theme", "light");
+				localStorage.setItem("theme", "light");
+			}
+		}
+		toggleSwitch.addEventListener("change", switchTheme);
+
+		// Add ESC key to pause/unpause
+		document.addEventListener('keydown', function (e) {
+			if (e.key === "Escape" || e.key === "Esc") {
+				if (typeof pauseGame === "function" && typeof resumeGame === "function") {
+					const pauseOverlay = document.getElementById("pause-overlay");
+					if (pauseOverlay && pauseOverlay.style.display === "flex") {
+						resumeGame();
+					} else {
+						pauseGame();
+					}
+				}
+			}
+		});
+
+		// Show/hide Home button on pause overlay
+		function showPauseHomeButton(show) {
+			const btn = document.getElementById('pause-home-button');
+			if (btn) btn.style.display = show ? 'block' : 'none';
+		}
+		// Attach click event to Home button
+		document.addEventListener('DOMContentLoaded', function () {
+			const btn = document.getElementById('pause-home-button');
+			if (btn) btn.onclick = function () {
+				window.location.href = "index.html";
+			};
+		});
+	</script>
 </body>
 
 </html>

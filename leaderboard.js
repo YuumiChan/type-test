@@ -7,6 +7,8 @@ const sentenceFilterContainer = document.getElementById('sentenceFilterContainer
 const sentenceFilter = document.getElementById('sentenceFilter');
 const leaderboardHeader = document.getElementById('leaderboardHeader');
 const leaderboardBody = document.getElementById('leaderboardBody');
+const sortFilterContainer = document.getElementById('sortFilterContainer');
+const sortFilter = document.getElementById('sortFilter');
 
 async function fetchSentences() {
     const { data, error } = await supabase.from('sentences').select('*');
@@ -18,16 +20,25 @@ async function fetchFallingScores() {
         .from('falling_scores')
         .select('score, user_id, users(username)')
         .order('score', { ascending: false })
-        .limit(5);
+        .limit(15);
     return data || [];
 }
 
-async function fetchSpeedTestScores(sentenceId) {
+async function fetchSpeedTestScores(sentenceId, sortBy) {
     let query = supabase
         .from('speedtest_scores')
-        .select('wpm, time_taken, user_id, sentence_id, users(username), sentences(text)')
-        .order('wpm', { ascending: false })
-        .limit(5);
+        .select('wpm, time_taken, user_id, sentence_id, users(username), sentences(text)');
+
+    // Sorting
+    if (sortBy === 'time') {
+        query = query.order('time_taken', { ascending: true });
+    } else {
+        query = query.order('wpm', { ascending: false });
+    }
+
+    // Limit to top 10
+    query = query.limit(10);
+
     if (sentenceId) query = query.eq('sentence_id', sentenceId);
     const { data, error } = await query;
     return data || [];
@@ -40,6 +51,7 @@ async function renderLeaderboard() {
 
     if (game === 'falling') {
         sentenceFilterContainer.style.display = 'none';
+        sortFilterContainer.style.display = 'none';
         leaderboardHeader.innerHTML = '<th>Rank</th><th>Username</th><th>Score</th>';
         const scores = await fetchFallingScores();
         scores.forEach((row, i) => {
@@ -47,16 +59,18 @@ async function renderLeaderboard() {
         });
     } else if (game === 'speedtest') {
         sentenceFilterContainer.style.display = '';
+        sortFilterContainer.style.display = '';
         // Populate sentence filter only if not already populated
         if (!sentenceFilter.options.length) {
             const sentences = await fetchSentences();
             sentenceFilter.innerHTML = '<option value="">All Sentences</option>' +
                 sentences.map(s => `<option value="${s.id}">${s.text.slice(0, 30)}${s.text.length > 30 ? '...' : ''}</option>`).join('');
         }
-        // Use the currently selected sentenceId
+        // Use the currently selected sentenceId and sortBy
         const selectedSentenceId = sentenceFilter.value;
+        const sortBy = sortFilter.value || 'wpm';
         leaderboardHeader.innerHTML = '<th>Rank</th><th>Username</th><th>Sentence</th><th>WPM</th><th>Time (s)</th>';
-        const scores = await fetchSpeedTestScores(selectedSentenceId);
+        const scores = await fetchSpeedTestScores(selectedSentenceId, sortBy);
         scores.forEach((row, i) => {
             leaderboardBody.innerHTML += `<tr><td>${i + 1}</td><td>${row.users?.username || row.user_id || 'Unknown'}</td><td>${row.sentences?.text ? row.sentences.text.slice(0, 30) : row.sentence_id}</td><td>${row.wpm}</td><td>${row.time_taken}</td></tr>`;
         });
@@ -73,11 +87,15 @@ gameFilter.addEventListener('change', async () => {
             sentences.map(s => `<option value="${s.id}">${s.text.slice(0, 30)}${s.text.length > 30 ? '...' : ''}</option>`).join('');
         // Restore previous selection if possible
         if (prevValue) sentenceFilter.value = prevValue;
+        sortFilterContainer.style.display = '';
+    } else {
+        sortFilterContainer.style.display = 'none';
     }
     renderLeaderboard();
 });
 
 sentenceFilter.addEventListener('change', renderLeaderboard);
+if (sortFilter) sortFilter.addEventListener('change', renderLeaderboard);
 
 document.addEventListener('DOMContentLoaded', async () => {
     // Always populate sentences on load if speedtest is selected
@@ -85,6 +103,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         const sentences = await fetchSentences();
         sentenceFilter.innerHTML = '<option value="">All Sentences</option>' +
             sentences.map(s => `<option value="${s.id}">${s.text.slice(0, 30)}${s.text.length > 30 ? '...' : ''}</option>`).join('');
+        sortFilterContainer.style.display = '';
+    } else {
+        sortFilterContainer.style.display = 'none';
     }
     renderLeaderboard();
 });

@@ -207,6 +207,7 @@ function togglePause() {
     const gameContainer = document.getElementById('game-container');
     const pauseButton = document.getElementById('pause-button');
     const pauseOverlay = document.getElementById('pause-overlay');
+    const pauseHomeBtn = document.getElementById('pause-home-button');
 
     if (isPaused) {
         gameContainer.classList.add('game-paused');
@@ -217,6 +218,17 @@ function togglePause() {
             word.style.animationPlayState = 'paused';
             word.style.top = word.offsetTop + 'px'; // Freeze current position
         });
+        // Show pause overlay and Home button
+        if (pauseOverlay) {
+            pauseOverlay.style.display = 'flex';
+            pauseOverlay.style.flexDirection = 'column';
+            pauseOverlay.style.alignItems = 'center';
+        }
+        if (pauseHomeBtn) {
+            pauseHomeBtn.style.display = 'block';
+            pauseHomeBtn.style.marginTop = '1.5em';
+            pauseHomeBtn.style.alignSelf = 'center';
+        }
     } else {
         gameContainer.classList.remove('game-paused');
         pauseButton.innerHTML = '<i class="fas fa-pause"></i>';
@@ -228,6 +240,9 @@ function togglePause() {
                 requestAnimationFrame(() => fall(word));
             }
         });
+        // Hide pause overlay and Home button
+        if (pauseOverlay) pauseOverlay.style.display = 'none';
+        if (pauseHomeBtn) pauseHomeBtn.style.display = 'none';
     }
 }
 
@@ -260,6 +275,15 @@ document.addEventListener('DOMContentLoaded', () => {
             togglePause();
         }
     });
+});
+
+// Add ESC key to pause/unpause using togglePause()
+document.addEventListener('keydown', function (e) {
+    if (e.key === "Escape" || e.key === "Esc") {
+        if (typeof togglePause === "function" && gameStarted && gameActive) {
+            togglePause();
+        }
+    }
 });
 
 // Update fall function to check for pause state

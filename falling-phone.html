@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Falling Words Game (Mobile)</title>
+    <link rel="stylesheet" href="falling.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link rel="icon" type="image/x-icon" href="umms/fabcon.png" />
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background: #1a1a1a;
+        }
+
+        body {
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        #game-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        #score {
+            color: #fff;
+            font-size: 2.2em;
+            text-align: center;
+            margin-top: 1.5em;
+            transition: font-size 0.3s;
+        }
+
+        #game-over {
+            font-size: 1.5em;
+        }
+
+        #mobile-input {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: calc(env(safe-area-inset-bottom, 0px) + 0px);
+            width: 90vw;
+            max-width: 400px;
+            font-size: 2em;
+            text-align: center;
+            padding: 0.7em 0.5em 0.7em 0.5em;
+            border: none;
+            outline: none;
+            z-index: 9999;
+            background: #222;
+            color: #fff;
+            border-radius: 1em;
+            box-shadow: 0 0 10px #0008;
+            transition: all 0.3s;
+        }
+
+        .theme-switch-wrapper {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 100;
+        }
+
+        @media (max-width: 700px) {
+            #score {
+                font-size: 1.5em;
+            }
+
+            #mobile-input {
+                font-size: 1.3em;
+            }
+        }
+
+        /* When keyboard is open, shrink everything */
+        body.keyboard-open #game-container {
+            height: 55vh !important;
+        }
+
+        body.keyboard-open #score {
+            font-size: 1.1em !important;
+            margin-top: 0.5em;
+        }
+
+        body.keyboard-open #game-over {
+            font-size: 1em !important;
+        }
+
+        body.keyboard-open #mobile-input {
+            font-size: 1em !important;
+            padding: 0.4em 0.2em;
+            bottom: calc(env(safe-area-inset-bottom, 0px) + 0px);
+            max-width: 95vw;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="game-container">
+        <div id="score">Score: 0</div>
+        <div id="game-over" style="display:none;">
+            <h2>Game Over!</h2>
+            <p>Final Score: <span id="final-score">0</span></p>
+            <button onclick="restartGame()">Restart</button>
+            <button onclick="goHome()">Home</button>
+        </div>
+        <div class="theme-switch-wrapper">
+            <label class="theme-switch" for="checkbox">
+                <input type="checkbox" id="checkbox" />
+                <div class="slider round"></div>
+            </label>
+        </div>
+    </div>
+    <input id="mobile-input" type="text" maxlength="1" autocomplete="off" placeholder="Type letter" />
+    <div id="footer"></div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
+    <script>
+        // Theme switch logic: checked = dark, unchecked = light
+        const toggleSwitch = document.querySelector("#checkbox");
+        const currentTheme = localStorage.getItem("theme");
+        if (currentTheme) {
+            document.documentElement.setAttribute("data-theme", currentTheme);
+            toggleSwitch.checked = currentTheme === "dark";
+        }
+        function switchTheme(e) {
+            if (e.target.checked) {
+                document.documentElement.setAttribute("data-theme", "dark");
+                localStorage.setItem("theme", "dark");
+            } else {
+                document.documentElement.setAttribute("data-theme", "light");
+                localStorage.setItem("theme", "light");
+            }
+        }
+        toggleSwitch.addEventListener("change", switchTheme);
+
+        // Falling game logic for mobile
+        let score = 0;
+        let gameActive = false;
+        let currentLetter = '';
+        let fallInterval;
+        let fallSpeed = 1200; // ms
+        const scoreDiv = document.getElementById('score');
+        const gameOverDiv = document.getElementById('game-over');
+        const finalScoreSpan = document.getElementById('final-score');
+        const input = document.getElementById('mobile-input');
+
+        function randomLetter() {
+            const chars = "abcdefghijklmnopqrstuvwxyz";
+            return chars[Math.floor(Math.random() * chars.length)];
+        }
+
+        function showLetter() {
+            currentLetter = randomLetter();
+            scoreDiv.innerHTML = `Score: ${score} <br><span style="font-size:3em;color:#4CAF50">${currentLetter.toUpperCase()}</span>`;
+        }
+
+        function startGame() {
+            score = 0;
+            gameActive = true;
+            gameOverDiv.style.display = "none";
+            input.value = "";
+            showLetter();
+            clearInterval(fallInterval);
+            fallInterval = setInterval(() => {
+                // Missed letter
+                endGame();
+            }, fallSpeed);
+        }
+
+        function endGame() {
+            gameActive = false;
+            clearInterval(fallInterval);
+            finalScoreSpan.textContent = score;
+            gameOverDiv.style.display = "block";
+        }
+
+        input.addEventListener('input', function () {
+            if (!gameActive) return;
+            const val = input.value.trim().toLowerCase();
+            if (val === currentLetter) {
+                score++;
+                showLetter();
+                input.value = "";
+                clearInterval(fallInterval);
+                fallInterval = setInterval(() => {
+                    endGame();
+                }, fallSpeed);
+            } else if (val.length > 0) {
+                endGame();
+            }
+        });
+
+        input.addEventListener('focus', function () {
+            if (!gameActive) startGame();
+        });
+
+        function restartGame() {
+            startGame();
+            setTimeout(() => input.focus(), 200);
+        }
+        function goHome() {
+            window.location.href = "index.html";
+        }
+
+        // Autofocus input on load
+        window.onload = function () {
+            setTimeout(() => input.focus(), 300);
+        };
+
+        // Load footer if needed
+        fetch('footer.html').then(res => res.text()).then(html => {
+            document.getElementById('footer').innerHTML = html;
+        });
+
+        // --- Keyboard detection and responsive scaling ---
+        let initialHeight = window.innerHeight;
+        let lastHeight = initialHeight;
+        let keyboardOpen = false;
+
+        function checkKeyboard() {
+            const currentHeight = window.innerHeight;
+            // If height is reduced by more than 150px, assume keyboard is open
+            if (initialHeight - currentHeight > 150) {
+                if (!keyboardOpen) {
+                    document.body.classList.add('keyboard-open');
+                    keyboardOpen = true;
+                }
+            } else {
+                if (keyboardOpen) {
+                    document.body.classList.remove('keyboard-open');
+                    keyboardOpen = false;
+                }
+            }
+            lastHeight = currentHeight;
+        }
+
+        window.addEventListener('resize', checkKeyboard);
+        // Also check on focus/blur for extra reliability
+        input.addEventListener('focus', checkKeyboard);
+        input.addEventListener('blur', checkKeyboard);
+    </script>
+</body>
+
+</html>
