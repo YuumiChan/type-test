@@ -13,6 +13,10 @@
 	<a href="index.html" class="home-btn">Home</a>
 	<div class="container">
 		<h1 class="title">Eyes on the screen</h1>
+		<!-- Show the current key to press -->
+		<div id="current-key"
+			style="text-align:center;font-size:2.5em;margin-bottom:1em;color:crimson;font-weight:bold;letter-spacing:0.2em;">
+		</div>
 		<div class="keyboard">
 			<ul class="row row-0">
 				<li class="pinky" id="esc">ESC</li>
@@ -86,15 +90,9 @@
 	</div>
 	<div id="footer"></div>
 	<script src="theme.js"></script>
+	<script src="excercise1.js"></script>
 	<script>
-		// Load header and footer
-		function loadFragment(id, url) {
-			fetch(url)
-				.then(res => res.text())
-				.then(html => { document.getElementById(id).innerHTML = html; });
-		}
-		loadFragment('header', 'header.html');
-		loadFragment('footer', 'footer.html');
+		// ...existing code for header/footer loading...
 	</script>
 </body>
 

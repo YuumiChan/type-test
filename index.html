@@ -96,9 +96,143 @@
 
 		}
 
+		@media (max-width: 700px) {
+			.typing-text {
+				font-size: 3rem;
+			}
+		}
+
+		@media (max-width: 500px) {
+			.typing-text {
+				font-size: 2rem;
+			}
+		}
+
+		@media (max-width: 400px) {
+			.typing-text {
+				font-size: 1.2rem;
+			}
+		}
+
 		@keyframes cursor-blink {
 			50% {
 				border-color: transparent;
+			}
+		}
+
+		/* Responsive layout for main container and leaderboard */
+		.container {
+			max-width: 1200px;
+			margin: 0 auto;
+			padding: 2rem;
+			box-sizing: border-box;
+		}
+
+		.leaderboard {
+			width: 100%;
+			max-width: 900px;
+			box-sizing: border-box;
+		}
+
+		#leaderboardTable {
+			width: 100%;
+			max-width: 100%;
+			overflow-x: auto;
+			font-size: 1em;
+		}
+
+		#leaderboardTable th,
+		#leaderboardTable td {
+			padding: 0.5em 0.3em;
+			word-break: break-word;
+		}
+
+		/* Responsive filter controls */
+		#gameFilter,
+		#sentenceFilter {
+			min-width: 120px;
+		}
+
+		@media (max-width: 900px) {
+			.container {
+				padding: 1rem;
+			}
+
+			.leaderboard {
+				padding: 0 0.5em;
+			}
+		}
+
+		@media (max-width: 700px) {
+			.container {
+				padding: 0.5rem;
+			}
+
+			.leaderboard {
+				font-size: 0.95em;
+			}
+
+			#leaderboardTable th,
+			#leaderboardTable td {
+				font-size: 0.95em;
+				padding: 0.3em 0.1em;
+			}
+
+			.SB {
+				flex-direction: column;
+				gap: 1em;
+			}
+
+			.game-button {
+				width: 100%;
+				font-size: 1.2rem;
+				padding: 1em 0;
+			}
+		}
+
+		@media (max-width: 500px) {
+			.container {
+				padding: 0.2rem;
+			}
+
+			.leaderboard {
+				font-size: 0.9em;
+				padding: 0;
+			}
+
+			#leaderboardTable th,
+			#leaderboardTable td {
+				font-size: 0.9em;
+				padding: 0.2em 0.05em;
+			}
+
+			#gameFilter,
+			#sentenceFilter {
+				font-size: 1em;
+				padding: 0.2em 0.5em;
+				min-width: 80px;
+			}
+
+			.sep {
+				margin: 1% 2%;
+				border-top-width: 4px;
+			}
+
+			.typing-text {
+				font-size: 6vw;
+			}
+		}
+
+		@media (max-width: 400px) {
+
+			#leaderboardTable th,
+			#leaderboardTable td {
+				font-size: 0.8em;
+				padding: 0.1em 0.02em;
+			}
+
+			.typing-text {
+				font-size: 4vw;
 			}
 		}
 	</style>
@@ -333,9 +467,9 @@
 							typingText.innerHTML += nextChar;
 						}
 						charIndex++;
-						setTimeout(type, 50); // faster typing speed
+						setTimeout(type, 20); // faster typing speed
 					} else {
-						setTimeout(erase, 1500); // wait before erasing
+						setTimeout(erase, 1200); // wait before erasing
 					}
 				} else {
 					setTimeout(() => {

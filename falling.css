@@ -3,24 +3,29 @@ body {
     overflow: hidden;
     font-family: Arial, sans-serif;
 }
+
 #game-container {
     width: 100vw;
     height: 100vh;
     background: #1a1a1a;
     position: relative;
 }
+
 .word {
     position: absolute;
     color: white;
     font-size: 24px;
     transition: opacity 0.3s;
 }
+
 .word.typing {
     color: #00ff00;
 }
+
 .word.fade {
     opacity: 0;
 }
+
 #score {
     position: absolute;
     top: 20px;
@@ -28,6 +33,7 @@ body {
     color: white;
     font-size: 24px;
 }
+
 #game-over {
     display: none;
     position: absolute;
@@ -37,28 +43,42 @@ body {
     text-align: center;
     color: white;
 }
+
 button {
     margin: 10px;
     padding: 10px 20px;
     font-size: 18px;
     cursor: pointer;
 }
+
 .word .typed {
     color: #00ff00;
 }
+
 .word .untyped {
     color: white;
 }
+
 .word.completed {
     opacity: 0;
     pointer-events: none;
     animation: pulse 0.5s infinite;
 }
+
 @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(1); }
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
+
 .word.danger {
     animation: pulse 0.5s infinite;
 }
@@ -72,11 +92,12 @@ button {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(0,0,0,0.8);
+    background: rgba(0, 0, 0, 0.8);
     z-index: 100;
 }
 
-#play-button, #resume-button {
+#play-button,
+#resume-button {
     background: none;
     border: 4px solid #4CAF50;
     border-radius: 50%;
@@ -96,7 +117,8 @@ button {
     height: 160px;
 }
 
-#play-button i, #resume-button i {
+#play-button i,
+#resume-button i {
     color: white;
     font-size: 64px;
     position: relative;
@@ -108,7 +130,8 @@ button {
     font-size: 84px;
 }
 
-#play-button::before, #resume-button::before {
+#play-button::before,
+#resume-button::before {
     content: '';
     position: absolute;
     top: 0;
@@ -120,11 +143,13 @@ button {
     transform: skewX(-15deg);
 }
 
-#play-button:hover::before, #resume-button:hover::before {
+#play-button:hover::before,
+#resume-button:hover::before {
     transform: skewX(-15deg) translateX(100%);
 }
 
-#play-button:hover i, #resume-button:hover i {
+#play-button:hover i,
+#resume-button:hover i {
     color: #fff;
 }
 
@@ -175,11 +200,11 @@ button {
     width: 26px;
 }
 
-input:checked + .slider {
+input:checked+.slider {
     background-color: #66bb6a;
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
     transform: translateX(26px);
 }
 
@@ -268,4 +293,73 @@ slider.round:before {
 
 [data-theme="light"] .word .untyped {
     color: #333;
+}
+
+@media (max-width: 900px) {
+    #game-container {
+        width: 100vw;
+        height: 100vh;
+        padding: 0;
+    }
+
+    #score {
+        font-size: 20px;
+        top: 10px;
+        right: 10px;
+    }
+
+    #pause-button {
+        top: 10px;
+        left: 10px;
+    }
+}
+
+@media (max-width: 600px) {
+    #game-container {
+        width: 100vw;
+        height: 100vh;
+        padding: 0;
+    }
+
+    #score {
+        font-size: 16px;
+        top: 5px;
+        right: 5px;
+    }
+
+    #pause-button {
+        top: 5px;
+        left: 5px;
+    }
+
+    #play-button,
+    #resume-button {
+        width: 90px;
+        height: 90px;
+    }
+
+    #play-button i,
+    #resume-button i {
+        font-size: 40px;
+    }
+
+    #play-button {
+        width: 120px;
+        height: 120px;
+    }
+
+    #play-button i {
+        font-size: 60px;
+    }
+}
+
+@media (max-width: 400px) {
+    #score {
+        font-size: 12px;
+    }
+
+    button {
+        font-size: 13px;
+        padding: 6px 10px;
+    }
 }

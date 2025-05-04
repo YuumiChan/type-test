@@ -47,10 +47,13 @@ async function renderLeaderboard() {
         });
     } else if (game === 'speedtest') {
         sentenceFilterContainer.style.display = '';
-        // Populate sentence filter
-        const sentences = await fetchSentences();
-        sentenceFilter.innerHTML = '<option value="">All Sentences</option>' +
-            sentences.map(s => `<option value="${s.id}">${s.text.slice(0, 30)}${s.text.length > 30 ? '...' : ''}</option>`).join('');
+        // Populate sentence filter only if not already populated
+        if (!sentenceFilter.options.length) {
+            const sentences = await fetchSentences();
+            sentenceFilter.innerHTML = '<option value="">All Sentences</option>' +
+                sentences.map(s => `<option value="${s.id}">${s.text.slice(0, 30)}${s.text.length > 30 ? '...' : ''}</option>`).join('');
+        }
+        // Use the currently selected sentenceId
         const selectedSentenceId = sentenceFilter.value;
         leaderboardHeader.innerHTML = '<th>Rank</th><th>Username</th><th>Sentence</th><th>WPM</th><th>Time (s)</th>';
         const scores = await fetchSpeedTestScores(selectedSentenceId);
@@ -60,9 +63,28 @@ async function renderLeaderboard() {
     }
 }
 
-gameFilter.addEventListener('change', renderLeaderboard);
+// Ensure sentence filter is populated and leaderboard is shown for the selected sentence
+gameFilter.addEventListener('change', async () => {
+    if (gameFilter.value === 'speedtest') {
+        // Always repopulate sentences and keep the selected value
+        const sentences = await fetchSentences();
+        const prevValue = sentenceFilter.value;
+        sentenceFilter.innerHTML = '<option value="">All Sentences</option>' +
+            sentences.map(s => `<option value="${s.id}">${s.text.slice(0, 30)}${s.text.length > 30 ? '...' : ''}</option>`).join('');
+        // Restore previous selection if possible
+        if (prevValue) sentenceFilter.value = prevValue;
+    }
+    renderLeaderboard();
+});
+
 sentenceFilter.addEventListener('change', renderLeaderboard);
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    // Always populate sentences on load if speedtest is selected
+    if (gameFilter.value === 'speedtest') {
+        const sentences = await fetchSentences();
+        sentenceFilter.innerHTML = '<option value="">All Sentences</option>' +
+            sentences.map(s => `<option value="${s.id}">${s.text.slice(0, 30)}${s.text.length > 30 ? '...' : ''}</option>`).join('');
+    }
     renderLeaderboard();
 });

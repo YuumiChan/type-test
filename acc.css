@@ -1,5 +1,5 @@
-*{
-  font-family: monospace;
+* {
+    font-family: monospace;
 }
 
 .container {
@@ -82,9 +82,19 @@ button[type="submit"]:hover {
 }
 
 @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-10px); }
-    75% { transform: translateX(10px); }
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-10px);
+    }
+
+    75% {
+        transform: translateX(10px);
+    }
 }
 
 .shake {
@@ -112,9 +122,68 @@ button[type="submit"]:hover {
     .container {
         padding: 1rem;
     }
-    
+
     .registration-form {
         width: 95%;
         padding: 1rem;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .container {
+        padding: 1rem;
+        max-width: 98vw;
+    }
+
+    .registration-form {
+        width: 98%;
+        padding: 1rem;
+        font-size: 0.98em;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .container {
+        padding: 0.5rem;
+        max-width: 100vw;
+    }
+
+    .registration-form {
+        width: 100%;
+        padding: 0.5rem;
+        font-size: 0.95em;
+    }
+
+    .form-group input,
+    .form-group select {
+        font-size: 0.95em;
+        padding: 10px;
+    }
+
+    button[type="submit"] {
+        font-size: 15px;
+        padding: 8px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .container {
+        padding: 0.2rem;
+    }
+
+    .registration-form {
+        font-size: 0.9em;
+        padding: 0.2rem;
+    }
+
+    .form-group input,
+    .form-group select {
+        font-size: 0.9em;
+        padding: 7px;
+    }
+
+    button[type="submit"] {
+        font-size: 13px;
+        padding: 6px;
     }
 }
