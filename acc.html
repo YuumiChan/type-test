@@ -1,126 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>ito nga nehh</title>
+		<link rel="stylesheet" href="index.css" />
+		<link rel="stylesheet" href="acc.css" />
+		<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/js-sha3@0.9.2/build/sha3.min.js"></script>
+		<style>
+			body {
+				opacity: 0;
+				animation: fadeIn 1s ease-in forwards;
+				transition: opacity 1s ease-in-out;
+			}
 
-<head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>ito nga nehh</title>
-	<link rel="stylesheet" href="index.css" />
-	<link rel="stylesheet" href="acc.css" />
-	<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
-	<style>
-		body {
-			opacity: 0;
-			animation: fadeIn 1s ease-in forwards;
-			transition: opacity 1s ease-in-out;
-		}
-
-		body.fade-out {
-			opacity: 0;
-		}
-
-		@keyframes fadeIn {
-			from {
+			body.fade-out {
 				opacity: 0;
 			}
 
-			to {
-				opacity: 1;
+			@keyframes fadeIn {
+				from {
+					opacity: 0;
+				}
+
+				to {
+					opacity: 1;
+				}
 			}
-		}
-	</style>
-	<script>
-		// Initialize Supabase client
-		const supabaseUrl = 'https://blirxpadaaamigqtykhq.supabase.co';
-		const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJsaXJ4cGFkYWFhbWlncXR5a2hxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYxNjUzNTIsImV4cCI6MjA2MTc0MTM1Mn0.h8vCuk5pzCFxAPn8IoZ1JEIRsyEqsxXl5S2HLCBRDYE';
-		const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-	</script>
-</head>
+		</style>
+		<script>
+			// Initialize Supabase client
+			const supabaseUrl = "https://blirxpadaaamigqtykhq.supabase.co";
+			const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJsaXJ4cGFkYWFhbWlncXR5a2hxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYxNjUzNTIsImV4cCI6MjA2MTc0MTM1Mn0.h8vCuk5pzCFxAPn8IoZ1JEIRsyEqsxXl5S2HLCBRDYE";
+			const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+		</script>
+	</head>
 
-<body>
-	<div id="header"></div>
+	<body>
+		<div id="header"></div>
 
-	<canvas id="letterCanvas"></canvas>
+		<canvas id="letterCanvas"></canvas>
 
-	<!-- Main content section -->
-	<main>
-		<div class="container">
-			<h1>Registration</h1>
-			<form id="registrationForm" class="registration-form">
-				<div class="form-group">
-					<label for="email">Email:</label>
-					<input type="email" id="email" name="email" required />
-					<span class="error" id="emailError"></span>
-				</div>
+		<!-- Main content section -->
+		<main>
+			<div class="container">
+				<h1>Registration</h1>
+				<form id="registrationForm" class="registration-form">
+					<div class="form-group">
+						<label for="email">Email:</label>
+						<input type="email" id="email" name="email" required />
+						<span class="error" id="emailError"></span>
+					</div>
 
-				<div class="form-group">
-					<label for="username">Username:</label>
-					<input type="text" id="username" name="username" required />
-				</div>
+					<div class="form-group">
+						<label for="username">Username:</label>
+						<input type="text" id="username" name="username" required />
+					</div>
 
-				<div class="form-group">
-					<label for="password">Password:</label>
-					<input type="password" id="password" name="password" required />
-					<span class="error" id="passwordError"></span>
-				</div>
+					<div class="form-group">
+						<label for="password">Password:</label>
+						<input type="password" id="password" name="password" required />
+						<span class="error" id="passwordError"></span>
+					</div>
 
-				<div class="form-group">
-					<label for="confirmPassword">Confirm Password:</label>
-					<input type="password" id="confirmPassword" name="confirmPassword" required />
-					<span class="error" id="confirmPasswordError"></span>
-				</div>
+					<div class="form-group">
+						<label for="confirmPassword">Confirm Password:</label>
+						<input type="password" id="confirmPassword" name="confirmPassword" required />
+						<span class="error" id="confirmPasswordError"></span>
+					</div>
 
-				<button type="submit">Register</button>
-				<div class="login-link">
-					<a href="login.html">I got account already</a>
-				</div>
-			</form>
+					<button type="submit">Register</button>
+					<div class="login-link">
+						<a href="login.html">I got account already</a>
+					</div>
+				</form>
+			</div>
+		</main>
+
+		<div class="theme-switch-wrapper">
+			<label class="theme-switch" for="checkbox">
+				<input type="checkbox" id="checkbox" />
+				<div class="slider round"></div>
+			</label>
 		</div>
-	</main>
 
-	<div class="theme-switch-wrapper">
-		<label class="theme-switch" for="checkbox">
-			<input type="checkbox" id="checkbox" />
-			<div class="slider round"></div>
-		</label>
-	</div>
+		<div id="footer"></div>
+		<script src="index.js"></script>
+		<script src="acc.js"></script>
+		<script>
+			// Load header and footer
+			function loadFragment(id, url, callback) {
+				fetch(url)
+					.then((res) => res.text())
+					.then((html) => {
+						document.getElementById(id).innerHTML = html;
+						if (typeof callback === "function") callback();
+					});
+			}
+			loadFragment("header", "header.html", function () {
+				// Now header is loaded, load auth-ui.js
+				var script = document.createElement("script");
+				script.src = "auth-ui.js";
+				document.body.appendChild(script);
+			});
+			loadFragment("footer", "footer.html");
 
-	<div id="footer"></div>
-	<script src="index.js"></script>
-	<script src="acc.js"></script>
-	<script>
-		// Load header and footer
-		function loadFragment(id, url, callback) {
-			fetch(url)
-				.then(res => res.text())
-				.then(html => {
-					document.getElementById(id).innerHTML = html;
-					if (typeof callback === 'function') callback();
-				});
-		}
-		loadFragment('header', 'header.html', function () {
-			// Now header is loaded, load auth-ui.js
-			var script = document.createElement('script');
-			script.src = 'auth-ui.js';
-			document.body.appendChild(script);
-		});
-		loadFragment('footer', 'footer.html');
-
-		// Fade-out on navigation
-		document.addEventListener('DOMContentLoaded', function () {
-			const links = document.querySelectorAll('a, button');
-			links.forEach(link => {
-				link.addEventListener('click', function (e) {
-					const href = link.getAttribute('href');
-					if (href && !href.startsWith('#') && !link.hasAttribute('download') && !link.target) {
-						e.preventDefault();
-						document.body.classList.add('fade-out');
-						setTimeout(() => { window.location.href = href; }, 500);
-					}
+			// Fade-out on navigation
+			document.addEventListener("DOMContentLoaded", function () {
+				const links = document.querySelectorAll("a, button");
+				links.forEach((link) => {
+					link.addEventListener("click", function (e) {
+						const href = link.getAttribute("href");
+						if (href && !href.startsWith("#") && !link.hasAttribute("download") && !link.target) {
+							e.preventDefault();
+							document.body.classList.add("fade-out");
+							setTimeout(() => {
+								window.location.href = href;
+							}, 500);
+						}
+					});
 				});
 			});
-		});
-	</script>
-</body>
-
+		</script>
+	</body>
 </html>

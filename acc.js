@@ -63,12 +63,15 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // Hash the password using SHA-3 (256)
+        const hashedPassword = sha3_256(password.value);
+
         // Registration logic for custom users table
         try {
             // Insert new user into users table
             const { data, error } = await supabase
                 .from('users')
-                .insert([{ username: username.value, email: email.value, password: password.value }])
+                .insert([{ username: username.value, email: email.value, password: hashedPassword }])
                 .select()
                 .single();
             if (error) throw error;

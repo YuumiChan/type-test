@@ -6,13 +6,15 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         const usernameOrEmail = document.getElementById('loginUsername').value;
         const password = document.getElementById('loginPassword').value;
+        // Hash the password using SHA-3 (256)
+        const hashedPassword = sha3_256(password);
         try {
-            // Query users table for matching username/email and password
+            // Query users table for matching username/email and hashed password
             const { data, error } = await supabase
                 .from('users')
                 .select('*')
                 .or(`username.eq.${usernameOrEmail},email.eq.${usernameOrEmail}`)
-                .eq('password', password)
+                .eq('password', hashedPassword)
                 .single();
             if (error || !data) throw new Error('Invalid credentials');
             // Store user info in localStorage
