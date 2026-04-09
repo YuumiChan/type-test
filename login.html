@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
@@ -10,8 +10,8 @@
 		<script src="https://cdn.jsdelivr.net/npm/js-sha3@0.9.2/build/sha3.min.js"></script>
 		<script>
 			// Initialize Supabase client
-			const supabaseUrl = "https://blirxpadaaamigqtykhq.supabase.co";
-			const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJsaXJ4cGFkYWFhbWlncXR5a2hxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYxNjUzNTIsImV4cCI6MjA2MTc0MTM1Mn0.h8vCuk5pzCFxAPn8IoZ1JEIRsyEqsxXl5S2HLCBRDYE";
+			const supabaseUrl = "https://ncnappbiqdvnqnoyqdax.supabase.co";
+			const supabaseKey = window.SUPABASE_ANON_KEY || localStorage.getItem("SUPABASE_ANON_KEY") || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5jbmFwcGJpcWR2bnFub3lxZGF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU3NTE4ODcsImV4cCI6MjA5MTMyNzg4N30.ssz5xFRFnydNwxv7ga_6K4MPoxvb5PDmVGpk_XpHw84";
 			const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 		</script>
 	</head>
